@@ -42,27 +42,29 @@ in the tracking table, one for each of the three values. Both the CouncilMemberI
 No other items take an array.
 
 The recognized patterns are:
-`/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/cmIds/:CouncilMemberId/features/:Features`
+```
+/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/cmIds/:CouncilMemberId/features/:Features
 
-`/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/personName/:AdditionalComment/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/personName/:AdditionalComment/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/contactId/:ContactId/consultationId/:ConsultationId/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/contactId/:ContactId/consultationId/:ConsultationId/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/loginId/:LoginId/consultationId/:ConsultationId/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/loginId/:LoginId/consultationId/:ConsultationId/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/leadIds/:LeadId`
+/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/leadIds/:LeadId
 
-`/track/appName/:Name/action/:Action/rmId/:PersonId/reportId/:LoginId`
+/track/appName/:Name/action/:Action/rmId/:PersonId/reportId/:LoginId
 
-`/track/appName/:Name/action/:Action/meetingId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/meetingId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/surveyId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/surveyId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId
 
-`/track/appName/:Name/action/:Action/visitId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId`
+/track/appName/:Name/action/:Action/visitId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId
+```
 
 The service converts the information in the URL into a JSON message like the ones shown in the section on Web Sockets.
 
