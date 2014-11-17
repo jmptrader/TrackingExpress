@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>ATC-Tracking Redirect for Email Suggesters</title>
+</head>
+<body>
+  <script>
+    (function() {
+      function redirect(destination) {
+        if (typeof destination != 'undefined') {
+          window.location.href = destination;
+        }
+      }
+      function redirectPage() {
+        var options = window.location.search.slice(1).split("&");
+        if (options.length == 1 &&  window.location.search.slice(1).substr(0,4) == "http") {
+          window.location.href =  window.location.search.slice(1);
+        } else {
+          var optionMap = {}
+          for (var i=0; i < options.length; i++) {
+            var opt = options[i].split("=", 2)
+            optionMap[opt[0]] = decodeURIComponent(opt[1])
+          }
+
+          var addAndTrack = true;
+          var keys = ["appName", "action", "personId", "consultationId", "cmid"]
+          for (var i=0; i<keys.length; i++) {
+            if (typeof optionMap[keys[i]] == "undefined") {
+              addAndTrack = false;
+            }
+          }
+
+          if (addAndTrack) {
+            var destination;
+            $.ajax({
+              dataType: 'jsonp',
+              url: "//tracking.glgroup.com/track/appName/"+optionMap["appName"]+"/action/"+optionMap["action"]+"/personId/"+optionMap["personId"]+"/consultationId/"+optionMap["consultationId"]+"/cmIds/"+optionMap["cmid"],
+              success: function(data) {
+                redirect(destination);
+                destination = optionMap['href'];
+              }
+            })
+            $.ajax({
+              dataType: 'jsonp',
+              url:  'https://vega.glgroup.com/vega/WS/Consultation/Attach?consultationId=' + optionMap["consultationId"] + '&councilMemberIds=' + optionMap["cmid"],
+              success: function(data) {
+                redirect(destination);
+                destination = optionMap['href'];
+              }
+            });
+          } else {
+            redirect(optionMap['href']);
+          }
+        }
+      }
+      if (window.attachEvent) {
+        window.attachEvent("onload", redirectPage);
+      } else if (window.addEventListener) {
+        window.addEventListener("load", redirectPage, false);
+      };
+    })();
+  </script>
+</body>

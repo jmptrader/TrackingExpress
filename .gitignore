@@ -1,0 +1,24 @@
+tracking/express.yaml
+index-BACKUP.js
+*.gem
+*.rbc
+*~
+.bundle
+.config
+coverage
+index-OLD.js
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+.DS_Store
+certs/
+
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
