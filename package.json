@@ -11,7 +11,6 @@
   "dependencies": {
     "express": "~4.2.0",
     "mysql": "~2.2.0",
-    "js-yaml": "~3.0.2",
     "ws": "~0.4.31",
     "express-params": "0.0.3",
     "winston": "~0.7.3"
