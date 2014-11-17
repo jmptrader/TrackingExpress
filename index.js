@@ -11,7 +11,6 @@
 var express = require('express');
 var params = require('express-params');
 var mysql = require('mysql');
-var yaml = require('js-yaml');
 var fs = require('fs');
 var winston = require('winston');
 var http = require('http');
