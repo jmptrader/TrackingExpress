@@ -16,33 +16,14 @@ var fs = require('fs');
 var winston = require('winston');
 var http = require('http');
 
-// HTTPS
-// Follow these instructions to create a CA and self-signed certificate:
-// http://greengeckodesign.com/blog/2013/06/15/creating-an-ssl-certificate-for-node-dot-js/
-// Uncomment the following lines and comment out the "var http = " line to use HTTPS.
-// And, set the paths to the files to your local locations
-//
-/*
-var https = require('https');
-var sslOptions = {
-  key: fs.readFileSync('/Users/glguser/src/SearchDeliveryTeam/TrackingExpress/certs/server.key'),
-  cert: fs.readFileSync('/Users/glguser/src/SearchDeliveryTeam/TrackingExpress/certs/server.crt'),
-  //ca: fs.readFileSync('/Users/glguser/src/SearchDeliveryTeam/TrackingExpress/certs/ca.crt'),
-  requestCert: true, // One example says true, the other says false
-  rejectUnauthorized: false
-};
-*/
-
 var verbose, log;
-var host, port, database, user, password;
-var e = yaml.safeLoad(fs.readFileSync('express.yaml', 'utf8'));
-host = process.env('DB_HOST') ? e.host;
+
 var pool = mysql.createPool({
-      host: e.host,
-      port: e.port,
-      database: e.database,
-      user: e.user,
-      password: e.password,
+      host: process.env['DB_HOST'],
+      port: process.env['DB_PORT'],
+      database: process.env['DB_NAME'],
+      user: process.env['DB_USER'],
+      password: process.env['DB_PWD'],
       multipleStatements: true
     });
 
@@ -121,27 +102,12 @@ process.on('uncaughtException', function(err) {
     process.exit();
 });
 
-// HTTPS
-// Uncomment the following lines and comment out the preceding line to use HTTPS.
-//
-/*
-server = https.createServer(sslOptions, app).listen(typeof process.env['PORT'] !== 'undefined' ? process.env['PORT'] : 443);
-log.info("********************");
-log.info("Created HTTPS server");
-log.info("********************");
-*/
-
 WebSocketServer = require('ws').Server;
 wss = new WebSocketServer({
   server: server
 });
 
 log.info("HTTP & WS servers listening on port " + (typeof process.env['PORT'] !== 'undefined' ? process.env['PORT'] : default_port) + ".");
-// HTTPS
-// Uncomment the following lines and comment out the preceding line to use HTTPS.
-//
-// log.info("HTTP & WS servers listening on port " + (typeof process.env['PORT'] !== 'undefined' ? process.env['PORT'] : 443) + ".");
-
 
 //=====================================
 // DEFINE QUERY PARAMETERS
