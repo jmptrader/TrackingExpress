@@ -36,7 +36,7 @@
             var destination;
             $.ajax({
               dataType: 'jsonp',
-              url: "//tracking.glgroup.com/track/appName/"+optionMap["appName"]+"/action/"+optionMap["action"]+"/personId/"+optionMap["personId"]+"/consultationId/"+optionMap["consultationId"]+"/cmIds/"+optionMap["cmid"],
+              url: "//services.glgresearch.com/trackingexpress/track/appName/"+optionMap["appName"]+"/action/"+optionMap["action"]+"/personId/"+optionMap["personId"]+"/consultationId/"+optionMap["consultationId"]+"/cmIds/"+optionMap["cmid"],
               success: function(data) {
                 redirect(destination);
                 destination = optionMap['href'];
