@@ -178,6 +178,5 @@ $ wscat -c ws://localhost/
 >  {"IdArray":{"key":"CouncilMemberId","values":[111,222,333]},"Name":"TESTER","Action":"add","PersonId":"123","ConsultationId":"456","AdditionalId":"777","AdditionalComment":"Fred Smith-Smythe"}
 ```
 
-
 ## Contributors
 Rich Simon, Steve Quince
