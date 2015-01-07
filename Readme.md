@@ -1,5 +1,5 @@
 # TrackingExpress
-Dashboard APIs using HTTP/REST and Web Sockets
+Dashboard APIs using HTTP/REST and Web Sockets.
 
 ## Installation
 
