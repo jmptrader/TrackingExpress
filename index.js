@@ -40,6 +40,7 @@ var emailOpenRegEx = '/track/appName/:Name/action/:Action/rmId/:PersonId/reportI
 var eventRegEx = '/track/appName/:Name/action/:Action/meetingId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId';
 var surveyRegEx = '/track/appName/:Name/action/:Action/surveyId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId';
 var visitRegEx = '/track/appName/:Name/action/:Action/visitId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId';
+var clientAndContactRegEx = '/track/appName/:Name/action/:Action/clientId/:ClientId/contactId/:ContactId/councilMemberId/:CouncilMemberId';
 
 //=====================================
 // Legacy Route definitions
@@ -125,6 +126,7 @@ app.param('LoginId', /[A-z0-9_\-]+/ );
 app.param('ConsultationId', /\d+/ );
 app.param('Features', /\w+/ );
 app.param('AdditionalComment', /[A-z0-9\+\-%\.]+/ );
+app.param('ClientId', /\d+/ );
 
 // optional multi-value REST parameters
 app.param("CouncilMemberId",function(req,res,next,val){
@@ -623,6 +625,13 @@ app.get(surveyRegEx, function(req, res, next) {
 //  curl -g http://localhost:3000/track/appName/TESTER/action/add/VisitId/345/ProductType/visit/cmIds/[111,222,333]
 app.get(visitRegEx, function(req, res, next) {
     defaultMessageHandler(req, res, next, 'CouncilMemberId');
+  }
+);
+
+
+//  curl -g http://localhost:3000/track/appName/TESTER/action/recommend/ClientId/345/ContactId/678/CouncilMemberId/111
+app.get(clientAndContactRegEx, function(req, res, next) {
+    defaultMessageHandler(req, res, next, '');
   }
 );
 
