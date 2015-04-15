@@ -41,6 +41,8 @@ var eventRegEx = '/track/appName/:Name/action/:Action/meetingId/:ProductId/produ
 var surveyRegEx = '/track/appName/:Name/action/:Action/surveyId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId';
 var visitRegEx = '/track/appName/:Name/action/:Action/visitId/:ProductId/productType/:ProductType/cmIds/:CouncilMemberId';
 var clientAndContactRegEx = '/track/appName/:Name/action/:Action/clientId/:ClientId/contactId/:ContactId/councilMemberId/:CouncilMemberId';
+var loginIdActionRegEx = '/track/appName/:Name/action/:Action/loginId/:LoginId';
+var loginAndClientIdRegEx = '/track/appName/:Name/action/:Action/loginId/:LoginId/clientId/:ClientId';
 
 //=====================================
 // Legacy Route definitions
@@ -631,6 +633,20 @@ app.get(visitRegEx, function(req, res, next) {
 
 //  curl -g http://localhost:3000/track/appName/TESTER/action/recommend/ClientId/345/ContactId/678/CouncilMemberId/111
 app.get(clientAndContactRegEx, function(req, res, next) {
+    defaultMessageHandler(req, res, next, '');
+  }
+);
+
+
+//  curl -g http://localhost:3000/track/appName/TESTER/action/open/loginId/345
+app.get(loginIdActionRegEx, function(req, res, next) {
+    defaultMessageHandler(req, res, next, '');
+  }
+);
+
+
+//  curl -g http://localhost:3000/track/appName/TESTER/action/query/loginId/123/ClientId/345
+app.get(loginAndClientIdRegEx, function(req, res, next) {
     defaultMessageHandler(req, res, next, '');
   }
 );
