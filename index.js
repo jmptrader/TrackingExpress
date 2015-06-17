@@ -4,6 +4,7 @@
 // var table = 'shipyard.tracking';
 // var table = 'test.trackingtest';
  var table = 'shipyard.vegatracking';
+ var epiServer = "https://" + process.env['EPISTREAM_URL'] + "/insert_proj_funnel.mustache";
 
 //=====================================
 // REQUIRED MODULES
@@ -14,6 +15,7 @@ var mysql = require('mysql');
 var fs = require('fs');
 var winston = require('winston');
 var http = require('http');
+var request = require('request');
 
 var verbose, log;
 
@@ -215,6 +217,37 @@ function requestResponse(status, description, http_channel, ws_channel) {
   }
 }
 
+// epiPost is a replacement for sqlExecute
+// params must be an object with at least 2 properties:
+// appName = The application or feature from which the action was taken
+// action = The action taken by the user
+function epiPost(params, http_channel, ws_channel) {
+
+  function epiResponse(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      requestResponse("success", "tracking event captured", http_channel, ws_channel);
+    }
+    else {
+      requestResponse("error", "failed to capture tracking event", http_channel, ws_channel);
+      log.error('params="' + JSON.stringify(params) + '", description="' + err + '"');
+    }
+  }
+
+  if (typeof params !== 'undefined' && Object.keys(params).length > 0 && typeof params['appName'] !== 'undefined' && typeof params['action'] !== 'undefined') {
+    //TODO: finish defining postOpts
+    var postOpts = {}
+    postOpts['uri'] = epiServer
+    postOpts['body'] = params
+    postOpts['json'] = true
+    request.post(postOpts, epiResponse);
+  }
+  else {
+    log.error('params="' + JSON.stringify(params) + '", description="unexpected value for params object"');
+    requestResponse("error", "Parameters 'action' & 'appName' are required, but were not supplied", http_channel, ws_channel);
+  }
+}
+
+
 function sqlExecute(sql, http_channel, ws_channel) {
   log.debug("sqlExecute start ...");
   pool.getConnection(function(error, cnx) {
@@ -267,7 +300,6 @@ function sqlExecute(sql, http_channel, ws_channel) {
 
 // Punting for now on refactoring code to reconcile
 // similarities between findDuplicate and sqlExecute
-// TODO: find a more elegant approach
 
 function findDuplicate(sql, http_channel, ws_channel, cb) {
   log.debug("findDuplicate start ...");
@@ -344,6 +376,7 @@ function processMessage(req, http_channel, ws_channel, arrayLabel) {
   var idArray = {};
   var sql = "";
 
+  // arrayLabel - groups CMs and Leads separately
   if(typeof arrayLabel !== 'undefined' & arrayLabel.length > 0) {
     idArray.key = arrayLabel;
     idArray.values = msg[arrayLabel]
@@ -353,6 +386,8 @@ function processMessage(req, http_channel, ws_channel, arrayLabel) {
     idArray = null;
   }
 
+  // TODO: Need to convert sql builder into params object hash
+  // TODO: Be careful, there's a loop in here over each CmId and LeadId
   for(var p in msg) {
     if(p != arrayLabel && typeof p !== 'undefined' && p !== null) {
       paramList.push(p);
@@ -379,7 +414,8 @@ function processMessage(req, http_channel, ws_channel, arrayLabel) {
   };
   log.debug("Calling sqlExecute for " + sql);
   log.debug("MSG = " + JSON.stringify(msg));
-  sqlExecute(sql, http_channel, ws_channel);
+  //sqlExecute(sql, http_channel, ws_channel);
+  epiPost(params, http_channel, ws_channel);
 };
 
 function defaultMessageHandler(req, res, next, arrayLabel) {
@@ -510,7 +546,6 @@ app.get(legacyFeaturesRegex,
 
 
 // curl -g http://localhost:3000/track/appName/TESTER/action/add/personId/123/consultationId/456/cmIds/[111,222,333]
-// TODO: below are not handled properly - i.e., not failing, should change how regex's are utilized
 // curl -g http://localhost:3000/track/appName/TESTER/action/add/personId/123-4/consultationId/456/cmIds/[111,222,333]
 // curl -g http://localhost:3000/track/appName/TESTER/action/add_up/personId/123/consultationId/456/cmIds/[111,222,333]
 // curl -g http://localhost:3000/track/appName/TESTER/action/add-down/personId/123/consultationId/456/cmIds/[111,222,333]
