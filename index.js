@@ -133,8 +133,8 @@ app.param('ClientId', /\d+/ );
 // optional multi-value REST parameters
 app.param("CouncilMemberId",function(req,res,next,val){
   try {
-      if(/\[[0-9,]+\]$/.test(val)) {
-        // vega_search sends in values that end in a comma -- this ia a bandaid
+      if(/\[[0-9\"\',]+\]$/.test(val)) {
+        // vega_search sends in values that end in a comma -- this is a bandaid
         if (typeof val === 'undefined') {
           val = 0;
         }
@@ -371,7 +371,8 @@ function processMessage(req, http_channel, ws_channel, arrayLabel) {
     for (var i = 0 ; i < idArray.values.length; i++) {
       multiSQLStr = new String(initSqlStr);
       paramList.push(idArray.key);
-      valueList.push(idArray.values[i]);
+      // ensure that cmIDs and LeadIDs are Ints
+      valueList.push(parseInt(idArray.values[i]));
       multiSQLStr += paramList.join(',') + ") values ('" + valueList.join("','") + "');";
       sql += multiSQLStr;
       paramList.pop();
