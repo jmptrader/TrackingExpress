@@ -33,6 +33,7 @@ var featuresRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/cons
 var cmidRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/cmIds/:CouncilMemberId';
 var similarCmsRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/cmIds/:CouncilMemberId';
 var origCmRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/personName/:AdditionalComment/cmIds/:CouncilMemberId';
+var origCmFeatureRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/originalcmId/:AdditionalId/personName/:AdditionalComment/features/:Features/cmIds/:CouncilMemberId';
 var contactIdRegEx = '/track/appName/:Name/action/:Action/contactId/:ContactId/consultationId/:ConsultationId/cmIds/:CouncilMemberId';
 var loginIdRegEx = '/track/appName/:Name/action/:Action/loginId/:LoginId/consultationId/:ConsultationId/cmIds/:CouncilMemberId';
 var leadIdRegEx = '/track/appName/:Name/action/:Action/personId/:PersonId/consultationId/:ConsultationId/leadIds/:LeadId';
@@ -550,6 +551,13 @@ app.get(legacyOrigCmidRegex,
 // curl -g http://localhost:3000/track/appName/TESTER/action/matched/personId/965486/consultationId/456/originalcmId/777/personName/Fred+Smith-Smythe/cmIds/[111,222,333]
 // For Similar CMs only
 app.get(origCmRegEx, function(req, res, next) {
+    defaultMessageHandler(req, res, next, 'CouncilMemberId');
+  }
+);
+
+// curl -g http://localhost:3000/track/appName/TESTER/action/matched/personId/965486/consultationId/456/originalcmId/777/personName/Fred+Smith-Smythe/features/similarcm_mlt/cmIds/[111,222,333]
+// For Similar CMs only with features added
+app.get(origCmFeatureRegEx, function(req, res, next) {
     defaultMessageHandler(req, res, next, 'CouncilMemberId');
   }
 );
